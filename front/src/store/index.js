@@ -7,7 +7,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     api_url: 'http://localhost:3000/',
-    isAuthenticated: false
+    isAuthenticated: false,
+    feed: []
   },
   mutations: {
     // Checks on page load if user is logged in
@@ -29,6 +30,12 @@ export default new Vuex.Store({
       state.isAuthenticated = false
       localStorage.removeItem('jwt')
       router.push('/login')
+    },
+    getFeed (state, feed) {
+      feed = feed.sort(function (a, b) {
+        return b.timestamp - a.timestamp
+      })
+      state.feed = feed
     }
   },
   actions: {

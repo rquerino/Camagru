@@ -44,8 +44,7 @@ export default {
       }).then(response => {
         // Now it login automatically, but I have to add the email verification before and push it to the Verify.vue
         if (response.data.auth) {
-          localStorage.setItem('jwt', response.data.token)
-          this.$router.push('/')
+          this.$store.commit('login', response.data.token)
         } else {
           this.error = response.data.msg
           this.hasErrors = true

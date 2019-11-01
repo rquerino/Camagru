@@ -9,6 +9,7 @@
 <script>
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -16,9 +17,10 @@ export default {
     Footer
   },
   computed: {
-    isAuthenticated () {
-      return this.$store.state.isAuthenticated
-    }
+    ...mapState(['isAuthenticated'])
+    // isAuthenticated () {
+    //   return this.$store.state.isAuthenticated
+    // }
   }
 }
 </script>

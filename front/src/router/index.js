@@ -3,7 +3,9 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
+import Post from '../views/Post.vue'
 import store from '../store'
+import axios from 'axios'
 
 Vue.use(VueRouter)
 
@@ -31,6 +33,14 @@ const routes = [
     meta: {
       requiresAuth: false
     }
+  },
+  {
+    path: '/newpost',
+    name: 'post',
+    component: Post,
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 
@@ -42,6 +52,14 @@ const router = new VueRouter({
 
 router.onReady(() => {
   store.commit('isAuthenticated')
+
+  axios.get(store.state.api_url + 'post/getposts')
+    .then(response => {
+      store.commit('getFeed', response.data)
+    })
+    .catch(err => {
+      if (err) throw err
+    })
 })
 
 router.beforeEach((to, from, next) => {
