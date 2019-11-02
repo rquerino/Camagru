@@ -4,6 +4,9 @@
     left: 0;
     right: 0;
 
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+
     width: 100vw;
     height: 40px;
     background-color: #EEE;
@@ -17,5 +20,20 @@
         line-height: 40px;
         text-align: center;
         font-weight: 900;
+        color: rgb(255, 15, 115);
+        
+        grid-column: 2;
+    }
+
+    .config-btn {
+        grid-column: 5;
+    }
+    .config-btn, .logout-btn {
+        background: none;
+        appearance: none;
+        border: none;
+        outline: none;
+        justify-self: end;
+
     }
 }

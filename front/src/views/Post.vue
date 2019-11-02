@@ -3,15 +3,26 @@
     <section class="stream">
       <video ref="video" id="video" width="100%" height="300" autoplay :class="(!captured) ? 'show' : 'hide'"></video>
       <div class="post-btns">
-        <button class="capture-btn" @click="capture" v-if="!captured">Capture</button>
-        <button class="cancel-btn" @click="cancel" v-if="captured">Cancel</button>
-        <button class="upload-btn" @click="upload" v-if="captured">Upload</button>
+        <button class="capture-btn" @click="capture" v-if="!captured">
+          <i class="material-icons icn-lg">camera</i>
+        </button>
+        <button class="upload-btn" @click="upload" v-if="!captured">
+          <i class="material-icons icn-lg">backup</i>
+        </button>
+        <button class="cancel-btn" @click="cancel" v-if="captured">
+          <i class="material-icons icn-lg">delete</i>
+          </button>
+        <button class="post-btn" @click="save" v-if="captured">
+          <i class="material-icons icn-lg">check_circle</i>
+          </button>
       </div>
     </section>
     <section class="capture" :class="(captured) ? 'show' : 'hide'">
       <canvas ref="canvas" id="canvas" width="100%" height="300"></canvas>
-      <label for="desc">Description:</label>
-      <input type="text" v-model="desc" />
+      <div class="field-group">
+        <label for="desc">Description:</label>
+        <input type="text" id="desc" name="desc" class="input-field" v-model="desc" />
+      </div>
     </section>
   </main>
 </template>
@@ -36,7 +47,7 @@ export default {
     cancel () {
       this.captured = false
     },
-    upload () {
+    save () {
       let apiUrl = this.$store.state.api_url
       this.$http.post(apiUrl + 'post/newpost', {
         auth_token: localStorage.getItem('jwt'),
@@ -49,6 +60,8 @@ export default {
           this.desc = ''
           console.log(response)
         })
+    },
+    upload () {
     }
   },
   mounted () {
@@ -79,22 +92,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.show {
-  display: block;
-}
-.hide {
-  display: none;
-}
-.post-btns {
-  position: absolute;
-  left: 50%;
-  bottom: 65px;
-  transform: translateX(-50%);
-}
-.image {
-  width: 100%;
-  height: auto;
-}
-</style>

@@ -1,0 +1,36 @@
+.feed {
+    .post {
+        background: #FFF;
+        border-bottom: 1px solid #EEE;
+
+        .post-user {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .post-picture {
+            .post-image {
+                width: 100%;
+            }
+        }
+
+        .post-desc {
+            padding: 15px;
+
+            p {
+                color: #171717;
+                font-size: 16px;
+                margin-top: 15px;
+            }
+            .timestamp {
+                color: #AAA;
+                font-size: 12px;
+                margin: 0;
+            }
+        }
+    }
+}

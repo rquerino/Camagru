@@ -7,12 +7,10 @@
         <img :src="post.image" :alt="post.desc" class="post-image">
       </section>
       <footer class="post-desc">
-        <p><strong>{{ post.username }}:</strong> {{ post.desc }}</p>
         <p class="timestamp">{{ timestampToDate(post.timestamp) }}</p>
+        <p><strong>{{ post.username }}:</strong> {{ post.desc }}</p>
       </footer>
     </article>
-
-    <button @click="logout">Logout</button>
   </main>
 </template>
 
@@ -24,9 +22,6 @@ export default {
     }
   },
   methods: {
-    logout () {
-      this.$store.commit('logout')
-    },
     timestampToDate (timestamp) {
       timestamp = timestamp * 1
       let d = new Date(timestamp)
