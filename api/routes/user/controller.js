@@ -1,4 +1,5 @@
 const model = require('./model');
+const postModel = require('../post/model');
 const jwt = require('jsonwebtoken');
 const config = require('../../../config');
 
@@ -37,7 +38,7 @@ module.exports = {
         if (!/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(newUser.email)) {
             res.send({ auth: false, msg: 'Please enter a valid e-mail.' });
             return;
-        } 
+        }
         if (newUser.username.length < 6 || newUser.username.length > 12) {
             res.send({ auth: false, msg: 'Username needs to have between 6 and 12 characters.' });
             return;
@@ -57,8 +58,28 @@ module.exports = {
             if (err.code == 11000) {
                 res.send({ auth: false, msg: 'Username or e-mail already registered.' });
             } else {
-                res.send({ auth: false, msg: 'An internal server error has occurred.' });   
+                res.send({ auth: false, msg: 'An internal server error has occurred.' });
             }
         })
+    },
+    getProfile: (req, res) => {
+        let user_id = jwt.decode(req.body.auth_token).id;
+        model.findById(user_id)
+            .then(user => {
+                if (!user) {
+                    res.send({ success: false, msg: 'User not found' });
+                }
+
+                postModel.find({ user_id: user_id })
+                    .then(posts => {
+                        res.send({
+                            success: true,
+                            details: {
+                                username: user.username,
+                                posts: posts
+                            }
+                        })
+                    })
+            });
     }
 }
