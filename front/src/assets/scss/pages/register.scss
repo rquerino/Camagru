@@ -48,7 +48,7 @@
     }
 }
 
-.login-page, .register-page {
+.login-page, .register-page, .config-page {
     .form-group {
         flex: 1;
         display: flex;
@@ -63,7 +63,7 @@
             text-indent: 5px;
             background: #EEE;
             outline: none;
-    
+
             &:focus {
             border: 1px solid #AAA;
             }

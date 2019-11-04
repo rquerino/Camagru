@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Post from '../views/Post.vue'
 import Profile from '../views/Profile.vue'
+import Config from '../views/Config.vue'
 import store from '../store'
 import axios from 'axios'
 
@@ -47,6 +48,14 @@ const routes = [
     path: '/profile',
     name: 'profile',
     component: Profile,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/config',
+    name: 'config',
+    component: Config,
     meta: {
       requiresAuth: true
     }

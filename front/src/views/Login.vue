@@ -8,6 +8,10 @@
             <input type="text" v-model="username" placeholder="Username"/>
             <input type="password" v-model="password" placeholder="Password"/>
             <button class="login-btn" @click="login">Log in</button>
+            <br>
+            <p>
+              Forget your password? <router-link class="link" to="/password">Click here</router-link>.
+            </p>
             <div class="error_msg" v-if="hasErrors">
                 {{ error }}
             </div>
