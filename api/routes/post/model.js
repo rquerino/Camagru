@@ -22,6 +22,14 @@ const postSchema = Schema({
     timestamp: {
         type: String,
         default: Date.now()
+    },
+    likes: {
+        type: [String],
+        required: false
+    },
+    comments: {
+        type: [String],
+        required: false
     }
 });
 

@@ -21,6 +21,14 @@
         .post-desc {
             padding: 15px;
 
+            .like-btn {
+                appearance: none;
+                border: none;
+                outline: 0;
+                background: none;
+                margin: 0;
+                padding: 0;
+            }
             p {
                 color: #171717;
                 font-size: 16px;

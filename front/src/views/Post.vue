@@ -4,16 +4,21 @@
       <video ref="video" id="video" width="100%" height="300" autoplay :class="(!captured) ? 'show' : 'hide'"></video>
       <div class="post-btns">
         <button class="capture-btn" @click="capture" v-if="!captured">
-          <i class="material-icons icn-lg">camera</i>
+          <i class="material-icons icn-lg">camera</i><br>
+          <label>Take picture</label>
         </button>
-        <button class="upload-btn" @click="upload" v-if="!captured">
-          <i class="material-icons icn-lg">backup</i>
-        </button>
+        <input type="file" id="imageLoader" @change="uploadImageToCanvas" v-if="!captured"/>
+        <!-- <button class="upload-btn" @click="upload" v-if="!captured">
+          <i class="material-icons icn-lg">backup</i><br>
+          <label>Upload image</label>
+        </button> -->
         <button class="cancel-btn" @click="cancel" v-if="captured">
-          <i class="material-icons icn-lg">delete</i>
+          <i class="material-icons icn-lg">delete</i><br>
+          <label>Discard image</label>
           </button>
         <button class="post-btn" @click="save" v-if="captured">
-          <i class="material-icons icn-lg">check_circle</i>
+          <i class="material-icons icn-lg">check_circle</i><br>
+          <label>Post image</label>
           </button>
       </div>
     </section>
@@ -35,7 +40,8 @@ export default {
       canvas: {},
       constraints: {},
       cap: '',
-      captured: false
+      captured: false,
+      files: []
     }
   },
   methods: {
@@ -61,7 +67,26 @@ export default {
           console.log(response)
         })
     },
-    upload () {
+    uploadImageToCanvas () {
+      let self = this
+      // let reader = event.target.files
+      let files = event.target.files
+      let reader = new FileReader()
+      reader.onload = (e) => {
+        var img = new Image()
+        img.onload = function () {
+          self.drawCanvasImage(img)
+        }
+        img.src = event.target.result
+      }
+      reader.readAsDataURL(files[0])
+    },
+    drawCanvasImage (img) {
+      var canvas = this.canvas
+      var ctx = canvas.getContext('2d')
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+      this.cap = canvas.toDataURL('image/png')
+      this.captured = true
     }
   },
   mounted () {

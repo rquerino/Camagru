@@ -7,6 +7,10 @@
         <img :src="post.image" :alt="post.desc" class="post-image">
       </section>
       <footer class="post-desc">
+        <button class="like-btn" @click="likeFunction" v-if="loggedIn">
+          <i class="material-icons icn-lg">favorite</i><br>
+          <label>{{ post.likes.length }}</label>
+        </button>
         <p class="timestamp">{{ timestampToDate(post.timestamp) }}</p>
         <p><strong>{{ post.username }}:</strong> {{ post.desc }}</p>
       </footer>
@@ -15,7 +19,20 @@
 </template>
 
 <script>
+// import { mapState } from 'vuex'
+// import axios from 'axios'
+
 export default {
+  props: {
+    post: Object
+  },
+  data () {
+    return {
+      loggedIn: false,
+      liked: false,
+      user_id: ''
+    }
+  },
   computed: {
     feed () {
       return this.$store.state.feed
@@ -35,6 +52,22 @@ export default {
         day = '0' + day
       }
       return day + '/' + month + '/' + year
+    },
+    likeFunction () {
+      let index = this.post.likes.indexOf(this.user_id)
+      if (index !== -1) {
+        this.post.splice(index)
+        this.liked = false
+      } else {
+        this.post.likes.push(this.user_id)
+        this.liked = true
+      }
+    }
+  },
+  mounted () {
+    if (localStorage.getItem('jwt')) {
+      this.user_id = localStorage.getItem('jwt')
+      this.loggedIn = true
     }
   }
 }
