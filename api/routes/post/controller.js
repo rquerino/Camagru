@@ -33,5 +33,9 @@ module.exports = {
             .then(result => {
                 res.send(result);
             });
+    },
+    like: (req, res) => {
+        // let user_id = jwt.decode(req.body.auth_token).id;
+        // let index = this.
     }
 }

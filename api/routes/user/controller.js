@@ -166,7 +166,6 @@ module.exports = {
                 }
             });
         }
-
         // Update notifications
         doc.findOneAndUpdate(conditions, { notifications: req.body.notifications }, function(err, response) {
             if (err) {

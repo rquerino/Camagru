@@ -28,9 +28,9 @@ export default {
   },
   data () {
     return {
+      token: '',
       loggedIn: false,
-      liked: false,
-      user_id: ''
+      liked: false
     }
   },
   computed: {
@@ -54,19 +54,24 @@ export default {
       return day + '/' + month + '/' + year
     },
     likeFunction () {
-      let index = this.post.likes.indexOf(this.user_id)
-      if (index !== -1) {
-        this.post.splice(index)
-        this.liked = false
-      } else {
-        this.post.likes.push(this.user_id)
-        this.liked = true
-      }
+      // let id = feed.id
+      // let apiUrl = this.$store.state.api_url
+      // this.$http.post(apiUrl + 'post/likepost', {
+      //   postId: id,
+      //   token: this.auth_token
+      // })
+      // if (index !== -1) {
+      //   this.post.splice(index)
+      //   this.liked = false
+      // } else {
+      //   this.post.likes.push(this.user_id)
+      //   this.liked = true
+      // }
     }
   },
   mounted () {
     if (localStorage.getItem('jwt')) {
-      this.user_id = localStorage.getItem('jwt')
+      this.token = localStorage.getItem('jwt')
       this.loggedIn = true
     }
   }
