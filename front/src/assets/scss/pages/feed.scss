@@ -1,4 +1,7 @@
 .feed {
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
     .post {
         background: #FFF;
         border-bottom: 1px solid #EEE;
@@ -19,7 +22,7 @@
         }
 
         .post-desc {
-            padding: 15px;
+            padding: 0 15px 0;
 
             .like-btn {
                 appearance: none;
@@ -28,6 +31,15 @@
                 background: none;
                 margin: 0;
                 padding: 0;
+                .icn-lg {
+                    font-size: 32px;
+                }
+                .not-liked {
+                    color: #ABABAB;
+                }
+                .liked {
+                    color: rgb(255, 15, 115);
+                }
             }
             p {
                 color: #171717;
@@ -37,8 +49,36 @@
             .timestamp {
                 color: #AAA;
                 font-size: 12px;
-                margin: 0;
+                margin: 10px 5px;
             }
+        }
+    }
+    .comments {
+        padding: 0 15px 20px;
+        .span-comment {
+            color: #171717;
+            font-size: 16px;
+            margin-top: 15px;
+
+        }
+        .comment-input {
+            display: block;
+            width: 100%;
+            padding: 0.5rem 1rem;
+            text-indent: 5px;
+            outline: none;
+            border: 1px solid #CCC;
+        }
+        .comment-btn {
+            height: 30px;
+            background: rgb(255, 15, 115);
+            appearance: none;
+            border: none;
+            outline: none;
+            border-radius: 8px;
+            color: #FFF;
+            font-size: 12px;
+            font-weight: 600;
         }
     }
 }

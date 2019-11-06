@@ -6,8 +6,6 @@ import Register from '../views/Register.vue'
 import Post from '../views/Post.vue'
 import Profile from '../views/Profile.vue'
 import Config from '../views/Config.vue'
-import store from '../store'
-import axios from 'axios'
 
 Vue.use(VueRouter)
 
@@ -66,18 +64,6 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
-})
-
-router.onReady(() => {
-  store.commit('isAuthenticated')
-
-  axios.get(store.state.api_url + 'post/getposts')
-    .then(response => {
-      store.commit('getFeed', response.data)
-    })
-    .catch(err => {
-      if (err) throw err
-    })
 })
 
 router.beforeEach((to, from, next) => {

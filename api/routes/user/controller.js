@@ -5,26 +5,30 @@ const config = require('../../../config');
 
 module.exports = {
     login: (req, res) => {
-        model.findOne({ username: req.body.username }, (err, user) => {
-            if (err) {
-                res.send({ auth: false, msg: 'An internal server error has occurred.' });
-                return;
-            }
+        model.findOne({ username: req.body.username })
+        .then(user => {
             if (!user) {
                 res.send({ auth: false, msg: 'Username does not exist.' });
                 return;
             }
+
             user.comparePassword(req.body.password, (err, isMatch) => {
                 if (err) throw err;
 
                 if (isMatch) {
                     let token = jwt.sign({ id: user._id }, config.secret, { expiresIn: 86400 });
-                    res.status(200).send({ auth: true, token });
+                    let u = user.toObject();
+                    delete u.password;
+                    res.status(200).send({ auth: true, token, user: u });
                     return;
                 }
                 res.send({ auth: false, msg: 'Password is incorrect.' });
             });
         })
+        .catch(err => {
+            res.send({ auth: false, msg: 'An internal server error has occurred.' });
+            return;
+        });
     },
     register: (req, res) => {
 
@@ -83,7 +87,7 @@ module.exports = {
     },
     getData: (req, res) => {
         let user_id = jwt.decode(req.body.auth_token).id;
-        model.findById(user_id)
+        model.findById(user_id).select('-password')
             .then(user => {
                 if (!user) {
                     res.send({ success: false, msg: 'User not found' });
@@ -91,88 +95,69 @@ module.exports = {
                 else {
                     res.send( {
                         success: true,
-                        details: {
-                            username: user.username,
-                            email: user.email
-                        }
+                        details: user
                     })
                 }
             });
     },
-    updateInformation: (req, res) => {
+    updateInformation: async (req, res) => {
         let user_id = jwt.decode(req.body.auth_token).id;
 
-        let conditions = {
-            _id: user_id
-        }
-
-        let update = {
-            username: req.body.username,
-            email: req.body.email,
-            password: req.body.password,
-            notifications: req.body.notifications
-        }
-
-        // Checking formats!
-        if (update.email != '' && !/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(update.email)) {
-            res.send({ auth: false, msg: 'Please enter a valid e-mail.' });
-            return;
-        }
-        if (update.username != '' && (update.username.length < 6 || update.username.length > 12)) {
-            res.send({ auth: false, msg: 'Username needs to have between 6 and 12 characters.' });
-            return;
-        }
-        if (update.password != '' && !/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*()_+-]).{8,}$/.test(update.password)) {
-            res.send({ auth: false, msg: 'Password needs at least 8 characters with at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character.' });
-            return;
-        }
-
-        const doc = model.findOne({ _id: user_id });
-        // update username
-        if (req.body.username != '') {
-            doc.findOneAndUpdate(conditions, { username: req.body.username }, function(err, response) {
-                if (err) {
-                    if (err.code == 11000) {
-                        res.send({ auth: false, msg: 'Username or e-mail already registered.' });
-                    } else {
-                        res.send({ auth: false, msg: 'An internal server error has occurred.' });
-                    }
-                } else {
-                    res.send({ auth: true })
-                }
-            });
-        }
-        // update email
-        if (req.body.email != '') {
-            doc.findOneAndUpdate(conditions, { email: req.body.email }, function(err, response) {
-                if (err) {
-                    if (err.code == 11000) {
-                        res.send({ auth: false, msg: 'Username or e-mail already registered.' });
-                    } else {
-                        res.send({ auth: false, msg: 'An internal server error has occurred.' });
-                    }
-                } else {
-                    res.send({ auth: true })
-                }
-            });
-        }
-        // update password
-        if (req.body.email != '') {
-            doc.findOneAndUpdate(conditions, { password: req.body.password }, function(err, response) {
-                if (err) {
-                    res.send({ auth: false, msg: 'An internal server error has occurred.' });
-                } else {
-                    res.send({ auth: true })
-                }
-            });
-        }
-        // Update notifications
-        doc.findOneAndUpdate(conditions, { notifications: req.body.notifications }, function(err, response) {
-            if (err) {
-                res.send({ auth: false, msg: 'An internal server error has occurred.' });
-            } else {
-                res.send({ auth: true })
+        try {
+            let doc = await model.findOne({ _id: user_id });
+            if (!doc) {
+                return res.send({ auth: false, msg: 'User ID not found.' });
             }
-        });
+            let update = {}
+            let fields = ['username', 'email', 'password', 'notifications'];
+            for (const key in req.body) {
+                if (fields.indexOf(key) === -1 || req.body[key] === '') continue;
+                // example: key = username, req.body[key] = 'Renato'
+                if (key === 'username') {
+                    if (req.body[key].length < 6 || req.body[key].length > 12) {
+                        return res.send({ auth: false, msg: 'Username needs to have between 6 and 12 characters.' });
+                    }
+                    if (await model.findOne({username: req.body[key]})) {
+                        return res.send({ auth: false, msg: 'Username already in use.' });
+                    }
+                    doc.username = req.body[key];
+                } else if (key === 'email') {
+                    if (!/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(req.body[key])) {
+                        return res.send({ auth: false, msg: 'Please enter a valid e-mail.' });
+                    }
+                    if (await model.findOne({email: req.body[key]})) {
+                        return res.send({ auth: false, msg: 'E-mail already in use.' });
+                    }
+                    doc.verified = false;
+                    // Insert sendEmail function!!
+                    doc.email = req.body[key];
+                } else if (key === 'password') {
+                    if (!/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*()_+-]).{8,}$/.test(req.body[key])) {
+                        return res.send({ auth: false, msg: 'Password needs at least 8 characters with at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character.' });
+                    }
+                    doc.password = req.body[key];
+                } else if (key === 'notifications') {
+                    doc.notifications = req.body[key];
+                }
+            }
+            await doc.save();
+            return res.send({ auth: true, msg: 'User information updated.'})
+        }
+        catch(err) {
+            return res.send({ auth: false, msg: 'An internal server error has occurred.' });
+        }
+    },
+    getUsername: (req, res) => {
+        model.findOne({ _id: req.body.userId }, (err, user) => {
+                if (!user) {
+                    res.send({ success: false, msg: 'ID not found' });
+                }
+                else {
+                    res.send( {
+                        success: true,
+                        username: user.username
+                    })
+                }
+            });
     }
 }

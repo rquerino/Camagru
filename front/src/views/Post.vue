@@ -41,7 +41,8 @@ export default {
       constraints: {},
       cap: '',
       captured: false,
-      files: []
+      files: [],
+      desc: ''
     }
   },
   methods: {

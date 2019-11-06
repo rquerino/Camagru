@@ -29,13 +29,45 @@ module.exports = {
         })
     },
     getposts: (req, res) => {
-        model.find()
+        model.find().populate({
+            path: 'comments.user_id',
+            select: 'username'
+            })
             .then(result => {
                 res.send(result);
             });
     },
     like: (req, res) => {
-        // let user_id = jwt.decode(req.body.auth_token).id;
-        // let index = this.
+        let user_id = jwt.decode(req.body.auth_token).id;
+        model.findById(req.body.postId, function (err, user) {
+            if (err) {
+                res.send({ liked: false });
+            } else {
+                let index = user.likes.indexOf(user_id);
+                if (index == -1) {
+                    user.likes.push(user_id);
+                    user.save();
+                    res.send({ liked: true });
+                } else {
+                    user.likes.pull(user_id);
+                    user.save();
+                    res.send({ liked: false });
+                }
+            }
+        });
+    },
+    comment: (req, res) => {
+        model.findById(req.body.postId, function (err, user) {
+            if (err) {
+                res.send({ success: false });
+            } else {
+                user.comments.push({
+                    user_id: req.body.userId,
+                    text: req.body.text
+                });
+                user.save();
+                res.send({ success: true });
+            }
+        });
     }
 }
