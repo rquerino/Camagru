@@ -51,7 +51,7 @@ export default {
           this.hasErrors = true
         }
       }).catch(err => {
-        console.log('Error: ', err)
+        throw err
       })
     }
   }

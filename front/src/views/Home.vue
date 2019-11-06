@@ -1,19 +1,20 @@
 <template>
   <main class="view feed">
+    <div class="verify-alert" v-if="!isVerified">Please verify your e-mail before using Camagru</div>
     <article class="post" v-for="post in feed" :key="post.id">
       <header class="post-user">{{ post.username }}</header>
       <section class="post-picture">
         <img :src="post.image" :alt="post.desc" class="post-image">
       </section>
       <div class="post-desc">
-        <button class="like-btn" @click="likeFunction(post)" v-if="loggedIn">
+        <button class="like-btn" @click="likeFunction(post)" v-if="isVerified">
           <i class="material-icons icn-lg" :class="(post.likes.indexOf($store.state.user._id) !== -1) ? 'liked' : 'not-liked'">favorite</i><br>
           <label>{{ post.likes.length }}</label>
         </button>
         <p class="timestamp">{{ timestampToDate(post.timestamp) }}</p>
         <p><strong>{{ post.username }}:</strong> {{ post.desc }}</p>
       </div>
-      <footer class="comments" v-if="loggedIn">
+      <footer class="comments" v-if="isVerified">
         <article class="texts" v-for="item of post.comments" :key="item._id">
           <span class="span-comment"><strong>{{ item.user_id.username}}:</strong> {{ item.text }}</span>
         </article>
@@ -38,6 +39,7 @@ export default {
     return {
       auth_token: '',
       loggedIn: false,
+      isVerified: true,
       commentText: ''
     }
   },
@@ -100,8 +102,8 @@ export default {
   },
   beforeMount () {
     if (localStorage.getItem('jwt')) {
-      this.loggedIn = true
       this.auth_token = localStorage.getItem('jwt')
+      this.isVerified = this.$store.state.user.verified
     }
   },
   mounted () {

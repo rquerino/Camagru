@@ -2,6 +2,15 @@ const model = require('./model');
 const postModel = require('../post/model');
 const jwt = require('jsonwebtoken');
 const config = require('../../../config');
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+    service: 'DebugMail',
+    auth: {
+        user: config.email_user,
+        pass: config.email_password
+    }
+});
 
 module.exports = {
     login: (req, res) => {
@@ -31,7 +40,6 @@ module.exports = {
         });
     },
     register: (req, res) => {
-
         let newUser = new model({
             username: req.body.username,
             email: req.body.email,
@@ -51,19 +59,45 @@ module.exports = {
             return;
         }
         // It's saving the user and creating a token.
-        // Need to implement the email verification part
         newUser.save()
         .then(result => {
             let token = jwt.sign({ id: result._id }, config.secret, { expiresIn: 86400 });
-            res.status(200).send({ auth: true, token });
+            let email_token = jwt.sign({ id: result._id }, config.email_secret, { expiresIn: 86400 });
+            // Need to implement the email verification part
+            const email_url = `http://localhost:3000/user/confirmation/${email_token}`;
+            transporter.sendMail({
+                to: result.email,
+                subject: 'Camagru - E-mail confirmation',
+                html: `Please click this link to confirm your e-mail: <a href="${email_url}">${email_url}</a>`
+            })
+            console.log('finished and sent email')
+            return res.status(200).send({ auth: true, token });
+            
+            // JWT AND USER ARE UNDEFINED ?!?!?!?
         })
         .catch(err => {
             if (err.code == 11000) {
-                res.send({ auth: false, msg: 'Username or e-mail already registered.' });
+                return res.send({ auth: false, msg: 'Username or e-mail already registered.' });
             } else {
-                res.send({ auth: false, msg: 'An internal server error has occurred.' });
+                return res.send({ auth: false, msg: 'An internal server error has occurred.' });
             }
         })
+    },
+    emailVerification: async (req, res) => {
+        let user_id = jwt.verify(req.params.token, config.email_secret);
+        try {
+            let doc = await model.findOne({ _id: user_id });
+            if (!doc) {
+                return res.send({ success: false, msg: 'Invalid token. E-mail verification failed.' });
+            }
+            doc.verified = true;
+            await doc.save();
+            res.send({ success: true, msg: 'E-mail verified.' });
+            return res.redirect('http://localhost:3000/');
+        }
+        catch(err) {
+            return res.send({ success: false, msg: 'An internal server error has occurred.' });
+        }
     },
     getProfile: (req, res) => {
         let user_id = jwt.decode(req.body.auth_token).id;

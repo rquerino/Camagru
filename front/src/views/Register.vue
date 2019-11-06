@@ -42,7 +42,7 @@ export default {
         email: this.email,
         password: this.password
       }).then(response => {
-        // Now it login automatically, but I have to add the email verification before and push it to the Verify.vue
+        console.log('response starting')
         if (response.data.auth) {
           this.$store.commit('login', response.data.token)
         } else {
@@ -50,6 +50,7 @@ export default {
           this.hasErrors = true
         }
       }).catch(err => {
+        console.log('catched an error here')
         this.error = err
         this.hasErrors = true
       })
