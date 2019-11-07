@@ -42,9 +42,8 @@ export default {
         email: this.email,
         password: this.password
       }).then(response => {
-        console.log('response starting')
         if (response.data.auth) {
-          this.$store.commit('login', response.data.token)
+          this.$store.commit('login', response.data)
         } else {
           this.error = response.data.msg
           this.hasErrors = true

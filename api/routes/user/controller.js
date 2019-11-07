@@ -5,7 +5,9 @@ const config = require('../../../config');
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-    service: 'DebugMail',
+    host: "smtp.sendgrid.net",
+    port: 465,
+    secure: true,
     auth: {
         user: config.email_user,
         pass: config.email_password
@@ -14,6 +16,14 @@ const transporter = nodemailer.createTransport({
 
 module.exports = {
     login: (req, res) => {
+        // Function just to verify transporter connection
+        // transporter.verify(function(error, success) {
+        //     if (error) {
+        //       console.log(error);
+        //     } else {
+        //       console.log("Server is ready to take our messages");
+        //     }
+        //   });
         model.findOne({ username: req.body.username })
         .then(user => {
             if (!user) {
@@ -63,17 +73,23 @@ module.exports = {
         .then(result => {
             let token = jwt.sign({ id: result._id }, config.secret, { expiresIn: 86400 });
             let email_token = jwt.sign({ id: result._id }, config.email_secret, { expiresIn: 86400 });
+            let u = result.toObject();
             // Need to implement the email verification part
             const email_url = `http://localhost:3000/user/confirmation/${email_token}`;
             transporter.sendMail({
                 to: result.email,
+                from: 'Camagru <donotreply@camagru42.com>',
                 subject: 'Camagru - E-mail confirmation',
                 html: `Please click this link to confirm your e-mail: <a href="${email_url}">${email_url}</a>`
+            }).then(response => {
+                return res.status(200).send({ auth: true, token, user: u });
+            }).catch(err => {
+                return res.status(200).send({ auth: true, token, user: u });
             })
-            console.log('finished and sent email')
-            return res.status(200).send({ auth: true, token });
-            
-            // JWT AND USER ARE UNDEFINED ?!?!?!?
+            // // u = user, send token and new user as result.
+            // let u = result.toObject();
+            // console.log(u);
+            // return res.status(200).send({ auth: true, token, user: u });
         })
         .catch(err => {
             if (err.code == 11000) {
@@ -84,7 +100,7 @@ module.exports = {
         })
     },
     emailVerification: async (req, res) => {
-        let user_id = jwt.verify(req.params.token, config.email_secret);
+        let user_id = jwt.verify(req.params.token, config.email_secret).id;
         try {
             let doc = await model.findOne({ _id: user_id });
             if (!doc) {
@@ -92,8 +108,8 @@ module.exports = {
             }
             doc.verified = true;
             await doc.save();
-            res.send({ success: true, msg: 'E-mail verified.' });
-            return res.redirect('http://localhost:3000/');
+            //res.send({ success: true, msg: 'E-mail verified.' });
+            return res.redirect('http://localhost:8080/');
         }
         catch(err) {
             return res.send({ success: false, msg: 'An internal server error has occurred.' });

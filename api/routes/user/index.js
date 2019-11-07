@@ -3,7 +3,7 @@ const controller = require('./controller');
 
 router.post('/login', controller.login); // http://host/user/login
 router.post('/register', controller.register);
-router.get('/confirmation', controller.emailVerification);
+router.get('/confirmation/:token', controller.emailVerification);
 router.post('/getprofile', controller.getProfile);
 router.post('/getdata', controller.getData);
 router.post('/getusername', controller.getUsername);
