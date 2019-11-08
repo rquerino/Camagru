@@ -2,7 +2,10 @@
   <main class="view feed">
     <div class="verify-alert" v-if="!isVerified">Please verify your e-mail before using Camagru</div>
     <article class="post" v-for="post in feed" :key="post.id">
-      <header class="post-user">{{ post.username }}</header>
+      <header class="post-user">
+      {{ post.username }}
+      <button v-if="checkOwner(post)" @click="deletePost(post)"><i class="material-icons">delete</i></button>
+      </header>
       <section class="post-picture">
         <img :src="post.image" :alt="post.desc" class="post-image">
       </section>
@@ -95,6 +98,34 @@ export default {
           text: this.commentText
         })
         this.commentText = ''
+        // Send e-mail to post owner
+        if (post.user_id !== this.$store.state.user._id && this.$store.state.user.notifications) {
+          this.$http.post(apiUrl + 'user/notification', {
+            id: post.user_id
+          })
+        }
+      }).catch(err => {
+        throw err
+      })
+    },
+    checkOwner (post) {
+      if (post.user_id === this.$store.state.user._id) {
+        return true
+      } else {
+        return false
+      }
+    },
+    deletePost (post) {
+      let apiUrl = this.$store.state.api_url
+      this.$http.post(apiUrl + 'post/delete', {
+        id: post._id
+      }).then(response => {
+        if (response.data.success) {
+          window.location.reload()
+          return alert('Post deleted.')
+        } else {
+          return alert('An internal error has occurred')
+        }
       }).catch(err => {
         throw err
       })

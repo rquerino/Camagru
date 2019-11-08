@@ -69,5 +69,13 @@ module.exports = {
                 res.send({ success: true });
             }
         });
+    },
+    delete: (req, res) => {
+        model.findByIdAndDelete(req.body.id, function (err) {
+            if(err) {
+                return res.send({ success: false, msg: 'An internal error has occurred.'});
+            }
+            return res.send({ success: true, msg: 'Post deleted.'});
+        });
     }
 }

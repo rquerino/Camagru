@@ -65,7 +65,6 @@ export default {
           this.captured = false
           this.cap = ''
           this.desc = ''
-          console.log(response)
         })
     },
     uploadImageToCanvas () {
@@ -112,7 +111,7 @@ export default {
         this.video.srcObject = stream
         this.video.play()
       }).catch(err => {
-        console.error(err)
+        throw err
       })
     }
   }

@@ -209,5 +209,50 @@ module.exports = {
                     })
                 }
             });
+    },
+    resetPassword: async (req, res) => {
+        let new_password = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+        // Resetting the password
+        try {
+            let doc = await model.findOne({ email: req.body.email });
+            if (!doc) {
+                return res.send({ success: false, msg: 'E-mail was not found.' });
+            }
+            doc.password = new_password;
+            await doc.save();
+        }
+        catch(err) {
+            return res.send({ success: false, msg: 'An internal server error has occurred resetting the password.' });
+        }
+        // Now sending email!
+        try {
+            transporter.sendMail({
+                to: req.body.email,
+                from: 'Camagru <donotreply@camagru42.com>',
+                subject: 'Camagru - Reset password',
+                html: `Your new password is: <strong>${new_password}</strong><br>Please don't forget to change it.`
+            });
+            return res.send({ success: true, msg: 'The e-mail has been sent.' });
+        }
+        catch(err) {
+            return res.send({ success: false, msg: 'An internal server error has occurred while trying to sent the e-mail.' });
+        }
+    },
+    notificationEmail: async (req, res) => {
+        try {
+            let doc = await model.findOne({ _id: req.body.id });
+            if (!doc) {
+                return res.send({ success: false, msg: 'E-mail was not found.' });
+            }
+            transporter.sendMail({
+                to: doc.email,
+                from: 'Camagru <donotreply@camagru42.com>',
+                subject: 'Camagru - Notificatoin',
+                html: `You received a comment in your picture, check it out!!`
+            });
+        }
+        catch(err) {
+            throw err;
+        }
     }
 }

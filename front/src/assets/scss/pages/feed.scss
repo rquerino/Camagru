@@ -24,6 +24,14 @@
 
             font-weight: 700;
             font-size: 18px;
+
+            button {
+                padding: 0 365px;
+                appearance: none;
+                border: none;
+                outline: none;
+                background: none;
+            }
         }
 
         .post-picture {
