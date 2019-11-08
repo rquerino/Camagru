@@ -16,7 +16,7 @@ const routes = [
     name: 'home',
     component: Home,
     meta: {
-      requiresAuth: true
+      requiresAuth: false
     }
   },
   {
@@ -86,14 +86,7 @@ router.beforeEach((to, from, next) => {
       next()
     }
   } else {
-    if (localStorage.getItem('jwt') != null) {
-      next({
-        path: '/',
-        params: { nextUrl: '/' }
-      })
-    } else {
-      next()
-    }
+    next()
   }
 })
 

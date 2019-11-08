@@ -1,6 +1,6 @@
 <template>
   <div id="app" v-if="!fetching">
-    <Header v-if="isAuthenticated"/>
+    <Header />
     <router-view/>
     <Footer v-if="isAuthenticated"/>
   </div>

@@ -1,8 +1,7 @@
 <template>
     <div class="login-page">
         <header>
-            <h3>Camagru</h3>
-            <h4>Reset password</h4>
+            <h3>Reset Password</h3>
         </header>
         <main class="form-group">
             <p>

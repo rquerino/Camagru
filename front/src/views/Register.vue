@@ -1,8 +1,7 @@
 <template>
     <div class="register-page">
         <header>
-            <h3>Camagru</h3>
-            <h4>Register</h4>
+            <h3>Register</h3>
         </header>
         <main class="form-group">
             <input type="text" v-model="username" placeholder="Username"/>

@@ -247,7 +247,7 @@ module.exports = {
             transporter.sendMail({
                 to: doc.email,
                 from: 'Camagru <donotreply@camagru42.com>',
-                subject: 'Camagru - Notificatoin',
+                subject: 'Camagru - Notification',
                 html: `You received a comment in your picture, check it out!!`
             });
         }

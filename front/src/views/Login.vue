@@ -1,8 +1,7 @@
 <template>
     <div class="login-page">
         <header>
-            <h3>Camagru</h3>
-            <h4>Login</h4>
+            <h3>Login</h3>
         </header>
         <main class="form-group">
             <input type="text" v-model="username" placeholder="Username"/>

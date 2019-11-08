@@ -28,10 +28,10 @@
     .config-btn {
         grid-column: 5;
     }
-    .logout-btn {
+    .login-btn, .logout-btn {
         grid-column: 6;
     }
-    .config-btn, .logout-btn {
+    .config-btn, .logout-btn, .login-btn {
         background: none;
         appearance: none;
         border: none;
