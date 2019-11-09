@@ -99,6 +99,11 @@ export default {
     },
     drawCanvasImage (source, width, height) {
       let ctx = this.canvas.getContext('2d')
+      this.canvas.width = width
+      this.canvas.height = height
+      ctx.drawImage(source, 0, 0, width, height)
+      this.captured = true
+      // Filter only works when rendering the 2nd time
       if (this.filter === null) {
         ctx.filter = 'none'
       } else if (this.filter === 'gray') {
@@ -106,11 +111,7 @@ export default {
       } else if (this.filter === 'sepia') {
         ctx.filter = 'sepia(1)'
       }
-      this.canvas.width = width
-      this.canvas.height = height
       ctx.drawImage(source, 0, 0, width, height)
-      this.captured = true
-      ctx.filter = 'none' // Clear filter after drawing
     },
     applyNormalFilter () {
       this.normal = true
