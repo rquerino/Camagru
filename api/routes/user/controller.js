@@ -254,5 +254,24 @@ module.exports = {
         catch(err) {
             throw err;
         }
-    }
+    },
+    getUserProfile: (req, res) => {
+        model.findOne({ username: req.body.username })
+            .then(user => {
+                if (!user) {
+                    res.send({ success: false, msg: 'User not found' });
+                }
+
+                postModel.find({ user_id: user._id })
+                    .then(posts => {
+                        res.send({
+                            success: true,
+                            details: {
+                                username: user.username,
+                                posts: posts
+                            }
+                        })
+                    })
+            });
+    },
 }

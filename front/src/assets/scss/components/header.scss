@@ -39,4 +39,7 @@
         justify-self: end;
 
     }
+    .config-btn:hover, .logout-btn:hover, .login-btn:hover {
+        color: rgb(255, 15, 115);
+      }
 }

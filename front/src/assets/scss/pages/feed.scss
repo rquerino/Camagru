@@ -21,16 +21,26 @@
             display: flex;
             align-items: center;
             padding: 15px;
-
-            font-weight: 700;
-            font-size: 18px;
-
-            button {
+            .username-btn {
+                appearance: none;
+                border: none;
+                outline: 0;
+                background: none;
+                font-weight: 700;
+                font-size: 18px;
+            }
+            .username-btn:hover {
+                color: rgb(255, 15, 115);
+              }
+            .delete-btn {
                 margin-left: auto;
                 appearance: none;
                 border: none;
                 outline: none;
                 background: none;
+            }
+            .delete-btn:hover {
+                color: rgb(255, 15, 115);
             }
         }
 
@@ -56,8 +66,14 @@
                 .not-liked {
                     color: #ABABAB;
                 }
+                .not-liked:hover {
+                    color: rgb(255, 15, 115);
+                  }
                 .liked {
                     color: rgb(255, 15, 115);
+                }
+                .liked:hover {
+                    color: #ABABAB;
                 }
             }
             p {
@@ -98,6 +114,9 @@
             color: #FFF;
             font-size: 12px;
             font-weight: 600;
+        }
+        .comment-btn:hover {
+            background: #ACACAC;
         }
     }
 }

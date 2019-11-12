@@ -3,8 +3,8 @@
     <div class="verify-alert" v-if="user && !isVerified">Please verify your e-mail before using Camagru</div>
     <article class="post" v-for="post in feed" :key="post.id">
       <header class="post-user">
-      {{ post.username }}
-      <button v-if="user && checkOwner(post)" @click="deletePost(post)"><i class="material-icons">delete</i></button>
+      <button class="username-btn" @click="goToProfile(post.username)"> {{ post.username }}</button>
+      <button class="delete-btn" v-if="user && checkOwner(post)" @click="deletePost(post)"><i class="material-icons">delete</i></button>
       </header>
       <section class="post-picture">
         <img :src="post.image" :alt="post.desc" class="post-image">
@@ -129,6 +129,9 @@ export default {
       }).catch(err => {
         throw err
       })
+    },
+    goToProfile (username) {
+      this.$router.push('/userprofile' + '?username=' + username)
     }
   },
   beforeMount () {

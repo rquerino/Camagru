@@ -6,6 +6,7 @@ router.post('/login', controller.login);
 router.post('/register', controller.register);
 router.get('/confirmation/:token', controller.emailVerification);
 router.post('/getprofile', controller.getProfile);
+router.post('/getuserprofile', controller.getUserProfile);
 router.post('/getdata', controller.getData);
 router.post('/getusername', controller.getUsername);
 router.post('/config', controller.updateInformation);

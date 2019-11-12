@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Post from '../views/Post.vue'
 import Profile from '../views/Profile.vue'
+import UserProfile from '../views/UserProfile.vue'
 import Config from '../views/Config.vue'
 import Password from '../views/Password.vue'
 
@@ -63,6 +64,14 @@ const routes = [
     path: '/password',
     name: 'password',
     component: Password,
+    meta: {
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/userprofile',
+    name: 'userprofile',
+    component: UserProfile,
     meta: {
       requiresAuth: false
     }
