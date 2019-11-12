@@ -37,6 +37,17 @@
           <label>Post image</label>
           </button>
       </div>
+      <div class="sticker-btns">
+        <span>Add a sticker to your image:</span><br>
+        <button class="sticker" v-for="sticker of stickerList"
+            :key="sticker.name"
+            :style="{ 'background-image': `url(${sticker.pic})` }"
+            @click="e => insertSticker(e, sticker)"
+          />
+          <button class="cancel-sticker" @click="removeSticker">
+            <i class="material-icons">not_interested</i>
+          </button>
+      </div>
       <div class="field-group">
         <label for="desc">Description:</label>
         <input type="text" id="desc" name="desc" class="input-field" v-model="desc" />
@@ -46,6 +57,8 @@
 </template>
 
 <script>
+import stickerList from '../modules/stickerlist'
+
 export default {
   data () {
     return {
@@ -59,7 +72,10 @@ export default {
       desc: '',
       normal: true,
       grayscale: false,
-      sepia: false
+      sepia: false,
+      sticker: {},
+      stickerList,
+      previousImage: null
     }
   },
   methods: {
@@ -69,6 +85,8 @@ export default {
     },
     cancel () {
       this.captured = false
+      this.stickers = []
+      this.previousImage = null
     },
     save () {
       this.cap = this.canvas.toDataURL('image/png')
@@ -112,6 +130,7 @@ export default {
         ctx.filter = 'sepia(1)'
       }
       ctx.drawImage(source, 0, 0, width, height)
+      this.previousImage = ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
     },
     applyNormalFilter () {
       this.normal = true
@@ -130,6 +149,24 @@ export default {
       this.grayscale = false
       this.sepia = true
       this.filter = 'sepia'
+    },
+    insertSticker (e, sticker) {
+      this.sticker = sticker
+      this.stickerSelected = true
+      this.drawSticker()
+    },
+    drawSticker () {
+      let stickerImage = new Image()
+      stickerImage.src = this.sticker.pic
+      let ctx = this.canvas.getContext('2d')
+      ctx.putImageData(this.previousImage, 0, 0)
+      ctx.drawImage(this.canvas, 0, 0, this.canvas.width, this.canvas.height)
+      ctx.drawImage(stickerImage, 50, this.canvas.height - 300, 300, 300)
+    },
+    removeSticker () {
+      let ctx = this.canvas.getContext('2d')
+      ctx.putImageData(this.previousImage, 0, 0)
+      ctx.drawImage(this.canvas, 0, 0, this.canvas.width, this.canvas.height)
     }
   },
   mounted () {

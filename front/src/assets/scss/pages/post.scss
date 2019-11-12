@@ -46,6 +46,7 @@
 
 .after-btns {
     display: flex;
+    padding-bottom: 15px;
     flex-direction: row;
     .cancel-btn, .post-btn {
         padding-top: 10px;
@@ -93,6 +94,34 @@ video.sepia {
 
 .hide { display: none; }
 .show { display: block; }
+
+.sticker-btns {
+    max-width: 600px;
+    margin: 0 auto;
+    border: 1px solid #DDD;
+    background: #FFF;
+    padding: 15px;
+    span {
+        color: #AAA;
+        font-size: 14px;
+        padding: 0 15px;
+    }
+    button{
+        width: 50px;
+        height: 50px;
+        background: white;
+        border-radius: 50%;
+        background-size: contain;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        border: 2px solid transparent;
+        margin: 5px;
+    }
+    .material-icons {
+        font-size: 40px;
+    }
+}
+
 // .post {
 //     max-width: 600px;
 //     width: 100%;
