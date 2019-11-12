@@ -26,6 +26,7 @@
         <button class="comment-btn" @click="saveComment(post)">Post comment</button>
       </footer>
     </article>
+    <center><p>You reached the end 8^)</p></center>
   </main>
 </template>
 

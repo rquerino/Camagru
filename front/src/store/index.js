@@ -39,9 +39,9 @@ export default new Vuex.Store({
       router.push('/login')
     },
     getFeed (state, feed) {
-      feed = feed.sort(function (a, b) {
-        return b.timestamp - a.timestamp
-      })
+      // feed = feed.sort(function (a, b) {
+      //   return b.timestamp - a.timestamp
+      // })
       state.feed = feed
     },
     setUser (state, data) {

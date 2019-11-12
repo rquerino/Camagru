@@ -19,10 +19,6 @@
           <label>Take picture</label>
         </button>
         <input class="input-file" type="file" id="imageLoader" @change="uploadImageToCanvas" v-if="!captured"/>
-        <!-- <button class="upload-btn" @click="upload" v-if="!captured">
-          <i class="material-icons icn-lg">backup</i><br>
-          <label>Upload image</label>
-        </button> -->
       </div>
     </section>
     <section class="capture" :class="(captured) ? 'show' : 'hide'">
@@ -42,11 +38,26 @@
         <button class="sticker" v-for="sticker of stickerList"
             :key="sticker.name"
             :style="{ 'background-image': `url(${sticker.pic})` }"
-            @click="e => insertSticker(e, sticker)"
+            @click="insertSticker(sticker)"
           />
           <button class="cancel-sticker" @click="removeSticker">
             <i class="material-icons">not_interested</i>
           </button>
+        <br>
+        <span>Choose a position to put the sticker in the picture:</span><br>
+      </div>
+      <div class="position-btns">
+        <div class="row1">
+          <button class="top-left-btn" @click="choosePosition('top-left')" >Top left</button>
+          <button class="top-right-btn" @click="choosePosition('top-right')" >Top right</button>
+        </div>
+        <div class="row2">
+          <button class="center-btn" @click="choosePosition('center')" >Center</button>
+        </div>
+        <div class="row3">
+          <button class="bottom-left-btn" @click="choosePosition('bottom-left')" >Bottom left</button>
+          <button class="bottom-right-btn" @click="choosePosition('bottom-right')" >Bottom right</button>
+        </div>
       </div>
       <div class="field-group">
         <label for="desc">Description:</label>
@@ -150,18 +161,33 @@ export default {
       this.sepia = true
       this.filter = 'sepia'
     },
-    insertSticker (e, sticker) {
+    insertSticker (sticker) {
       this.sticker = sticker
-      this.stickerSelected = true
-      this.drawSticker()
+      // this.stickerSelected = true
+      // this.drawSticker()
     },
-    drawSticker () {
+    choosePosition (pos) {
+      let imSize = this.canvas.width / 4
+      if (pos === 'top-left') {
+        this.drawSticker(0, 0)
+      } else if (pos === 'top-right') {
+        this.drawSticker(this.canvas.width - imSize, 0)
+      } else if (pos === 'bottom-left') {
+        this.drawSticker(0, this.canvas.height - imSize)
+      } else if (pos === 'bottom-right') {
+        this.drawSticker(this.canvas.width - imSize, this.canvas.height - imSize)
+      } else if (pos === 'center') {
+        this.drawSticker((this.canvas.width - imSize) / 2, (this.canvas.height - imSize) / 2)
+      }
+    },
+    drawSticker (x, y) {
       let stickerImage = new Image()
       stickerImage.src = this.sticker.pic
       let ctx = this.canvas.getContext('2d')
-      ctx.putImageData(this.previousImage, 0, 0)
-      ctx.drawImage(this.canvas, 0, 0, this.canvas.width, this.canvas.height)
-      ctx.drawImage(stickerImage, 50, this.canvas.height - 300, 300, 300)
+      // ctx.putImageData(this.previousImage, 0, 0)
+      // ctx.drawImage(this.canvas, 0, 0, this.canvas.width, this.canvas.height)
+      ctx.drawImage(stickerImage, x, y, this.canvas.width / 4, this.canvas.width / 4)
+      this.sticker = null
     },
     removeSticker () {
       let ctx = this.canvas.getContext('2d')

@@ -1,8 +1,10 @@
 .post, .stream {
     width: 100%;
   }
-  
+
 .before-btns {
+    max-width: 600px;
+    margin: 0 auto;
     display: flex;
     flex-direction: row;
     .capture-btn {
@@ -19,8 +21,9 @@
     }
     .input-file {
         padding-top: 20px;
+        margin: 0 auto;
     }
-} 
+}
 
 .filter-btns {
     display: flex;
@@ -53,6 +56,8 @@
 }
 
 .after-btns {
+    max-width: 600px;
+    margin: 0 auto;
     display: flex;
     padding-bottom: 15px;
     flex-direction: row;
@@ -68,9 +73,11 @@
     .cancel-btn:hover, .post-btn:hover {
         color: rgb(255, 15, 115);
     }
-} 
+}
 
 .field-group {
+    max-width: 600px;
+    margin: 0 auto;
     padding: 15px;
     box-sizing: border-box;
 
@@ -129,69 +136,35 @@ video.sepia {
         border: 2px solid transparent;
         margin: 5px;
     }
+    button:hover {
+        background: rgb(255, 15, 115);
+    }
     .material-icons {
         font-size: 40px;
     }
 }
 
-// .post {
-//     max-width: 600px;
-//     width: 100%;
-//     .field-group {
-//         padding: 15px;
-//         box-sizing: border-box;
+.position-btns {
+    max-width: 600px;
+    height: 200px;
+    margin: 0 auto;
+    border: 1px solid #DDD;
+    background: #EEE;
+    padding: 20px;
 
-//         label {
-//             color: #AAA;
-//             font-size: 14px;
-//         }
-
-//         .input-field {
-//             display: block;
-//             width: 100%;
-//             margin: 0 auto;
-//             height: 40px;
-//             text-indent: 15px;
-//             outline: none;
-//             border: 1px solid #CCC;
-//         }
-//     }
-
-//     .post-btns {
-//         position: absolute;
-//         left: 50%;
-//         bottom: 65px;
-//         transform: translateX(-50%);
-
-//         button {
-//             appearance: none;
-//             border: none;
-//             outline: 0;
-//             background: none;
-//             margin: 0;
-//             padding: 0;
-//             margin-right: 50px;
-
-//             &:last-of-type {
-//                 margin-right: 0;
-//             }
-//         }
-//     }
-// }
-
-// .icn-lg {
-//     font-size: 40px;
-// }
-
-// .show {
-// display: block;
-// }
-
-// .hide {
-// display: none;
-// }
-
-// .image {
-// width: 100%;
-// height: auto;
-// }
+    .row1, .row2, .row3 {
+        display: flex;
+        flex-direction: row;
+    }
+    button {
+        font-size: 14px;
+        width: 100px;
+        height: 50px;
+        border: 1px solid #CCC;
+        margin: 0 auto;
+    }
+    button:hover {
+        color: #FFF;
+        background: rgb(255, 15, 115);
+    }
+}

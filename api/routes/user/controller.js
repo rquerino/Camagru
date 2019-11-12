@@ -65,7 +65,7 @@ module.exports = {
             return;
         }
         if (!/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*()_+-]).{8,}$/.test(newUser.password)) {
-            res.send({ auth: false, msg: 'Password needs at least 8 characters with at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character.' });
+            res.send({ auth: false, msg: 'Password needs at least 8 characters with at least 1 letter, 1 number and 1 special character.' });
             return;
         }
         // It's saving the user and creating a token.
@@ -183,7 +183,7 @@ module.exports = {
                     doc.email = req.body[key];
                 } else if (key === 'password') {
                     if (!/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*()_+-]).{8,}$/.test(req.body[key])) {
-                        return res.send({ auth: false, msg: 'Password needs at least 8 characters with at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character.' });
+                        return res.send({ auth: false, msg: 'Password needs at least 8 characters with at least 1 letter, 1 number and 1 special character.' });
                     }
                     doc.password = req.body[key];
                 } else if (key === 'notifications') {

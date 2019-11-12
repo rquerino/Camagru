@@ -29,7 +29,7 @@ module.exports = {
         })
     },
     getposts: (req, res) => {
-        model.find().populate({
+        model.find().sort({ $natural: -1}).populate({
             path: 'comments.user_id',
             select: 'username'
             })
