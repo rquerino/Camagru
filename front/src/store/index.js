@@ -28,6 +28,7 @@ export default new Vuex.Store({
       localStorage.setItem('jwt', data.token)
       localStorage.setItem('user', JSON.stringify(data.user))
       router.push('/')
+      window.location.reload()
     },
     // Function logout in all pages (if logged in)
     logout (state) {

@@ -26,12 +26,6 @@ export default {
       this.$router.push(path)
     }
   },
-  mounted () {
-    if (localStorage.getItem('jwt')) {
-      this.isVerified = this.$store.state.user.verified
-      this.isLogged = true
-    }
-  },
   beforeMount () {
     if (localStorage.getItem('jwt')) {
       this.isVerified = this.$store.state.user.verified
