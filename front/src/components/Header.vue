@@ -1,6 +1,6 @@
 <template>
     <header class="header">
-        <h3 class="title">Camagru</h3>
+        <router-link style="text-decoration: none;" to="/"><h3 class="title">Camagru</h3></router-link>
         <button class="config-btn" @click="goto('/config')" v-if="isVerified">
             <i class="material-icons">settings</i>
         </button>
@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     goto (path) {
-      this.$router.push(path)
+      this.$router.push(path).catch((e) => e)
     }
   },
   beforeMount () {

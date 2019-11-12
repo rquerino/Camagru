@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     goto (path) {
-      this.$router.push(path)
+      this.$router.push(path).catch((e) => e)
     }
   },
   beforeMount () {
