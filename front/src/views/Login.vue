@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import router from '../router'
+
 export default {
   name: 'login',
   data () {
@@ -52,6 +54,11 @@ export default {
       }).catch(err => {
         throw err
       })
+    }
+  },
+  beforeMount () {
+    if (localStorage.getItem('jwt')) {
+      router.push('/')
     }
   }
 }

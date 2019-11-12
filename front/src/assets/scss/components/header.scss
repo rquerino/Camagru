@@ -32,6 +32,7 @@
         grid-column: 6;
     }
     .config-btn, .logout-btn, .login-btn {
+        cursor: pointer;
         background: none;
         appearance: none;
         border: none;

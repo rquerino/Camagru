@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import router from '../router'
+
 export default {
   name: 'register',
   data () {
@@ -52,6 +54,11 @@ export default {
         this.error = err
         this.hasErrors = true
       })
+    }
+  },
+  beforeMount () {
+    if (localStorage.getItem('jwt')) {
+      router.push('/')
     }
   }
 }

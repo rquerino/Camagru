@@ -6,12 +6,16 @@
     display: flex;
     flex-direction: row;
     .capture-btn {
+        cursor: pointer;
         padding-top: 10px;
         margin: 0 auto;
         background: none;
         appearance: none;
         border: none;
         outline: none;
+    }
+    .capture-btn:hover {
+        color: rgb(255, 15, 115);
     }
     .input-file {
         padding-top: 20px;
@@ -25,6 +29,7 @@
     padding: 15px;
     margin: 0 auto;
     .normal-filter-btn, .grayscale-filter-btn, .sepia-filter-btn {
+        cursor: pointer;
         width: 100%;
         height: 20px;
         appearance: none;
@@ -42,6 +47,9 @@
     .not-selected {
         background: #ABABAB;
     }
+    .not-selected:hover {
+        background: rgb(255, 15, 115);
+    }
 }
 
 .after-btns {
@@ -49,12 +57,16 @@
     padding-bottom: 15px;
     flex-direction: row;
     .cancel-btn, .post-btn {
+        cursor: pointer;
         padding-top: 10px;
         margin: 0 auto;
         background: none;
         appearance: none;
         border: none;
         outline: none;
+    }
+    .cancel-btn:hover, .post-btn:hover {
+        color: rgb(255, 15, 115);
     }
 } 
 
