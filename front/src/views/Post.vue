@@ -113,6 +113,9 @@ export default {
       this.previousImage = null
     },
     save () {
+      if (this.desc === '') {
+        return alert('Please provide a picture description.')
+      }
       this.cap = this.canvas.toDataURL('image/png')
       let apiUrl = this.$store.state.api_url
       this.$http.post(apiUrl + 'post/newpost', {
