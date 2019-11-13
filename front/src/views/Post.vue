@@ -28,6 +28,10 @@
           <i class="material-icons icn-lg">delete</i><br>
           <label>Discard image</label>
           </button>
+        <button class="save-btn" @click="downloadImage">
+          <i class="material-icons icn-lg">save</i><br>
+          <label>Download image</label>
+          </button>
         <button class="post-btn" @click="save">
           <i class="material-icons icn-lg">check_circle</i><br>
           <label>Post image</label>
@@ -202,6 +206,16 @@ export default {
       let ctx = this.canvas.getContext('2d')
       ctx.putImageData(this.previousImage, 0, 0)
       ctx.drawImage(this.canvas, 0, 0, this.canvas.width, this.canvas.height)
+    },
+    downloadImage () {
+      let a = document.createElement('a')
+      let name = `camagru-pic-${Date.now()}.png`
+
+      a.download = name
+      this.canvas.toBlob((blob) => {
+        a.href = URL.createObjectURL(blob)
+        a.click()
+      })
     }
   },
   mounted () {
@@ -234,6 +248,13 @@ export default {
       auth_token: localStorage.getItem('jwt')
     }).then(({ data }) => {
       this.posts = data.details.posts
+    })
+  },
+  beforeDestroy () {
+    // Stop using webcam once the component is destroyed (on $emit('close'))
+    this.video.pause()
+    this.video.srcObject.getTracks().forEach((track) => {
+      track.stop()
     })
   }
 }

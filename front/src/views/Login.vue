@@ -9,7 +9,7 @@
             <button class="login-btn" type="submit">Log in</button>
             <br>
             <p>
-              Forget your password? <router-link class="link" to="/password">Click here</router-link>.
+              Forgot your password? <router-link class="link" to="/password">Click here</router-link>.
             </p>
             <div class="error_msg" v-if="hasErrors">
                 {{ error }}

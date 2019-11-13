@@ -49,7 +49,6 @@ export default {
       this.$http.post(apiUrl + 'user/resetpassword', {
         email: this.email
       }).then(response => {
-        console.log(response)
         if (response.data.success) {
           alert('You will receive your new password in your e-mail. Don\'t forget to change it later.')
           this.$router.push('Login')
@@ -58,7 +57,6 @@ export default {
           this.hasErrors = true
         }
       }).catch(err => {
-        console.log(err)
         throw err
       })
     }

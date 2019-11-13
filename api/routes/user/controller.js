@@ -107,7 +107,7 @@ module.exports = {
             doc.verified = true;
             await doc.save();
             //res.send({ success: true, msg: 'E-mail verified.' });
-            return res.redirect('http://localhost:8080/');
+            return res.redirect('/');
         }
         catch(err) {
             return res.send({ success: false, msg: 'An internal server error has occurred.' });

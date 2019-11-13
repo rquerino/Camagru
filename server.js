@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const history = require('connect-history-api-fallback');
 
 const config = require('./config');
 const db = require('./config/database');
@@ -18,8 +19,12 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.json({ limit: '50mb' }));
 app.use(cors);
 
+app.use(history());
+
 app.use('/user', userRouter);
 app.use('/post', postRouter);
+app.use(express.static(__dirname + '/front/dist'));
+
 
 app.listen(config.port, console.log('Server connected to http://localhost:%s', config.port));
 

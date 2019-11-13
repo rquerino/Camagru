@@ -62,7 +62,7 @@
     display: flex;
     padding-bottom: 15px;
     flex-direction: row;
-    .cancel-btn, .post-btn {
+    .cancel-btn, .post-btn, .save-btn {
         cursor: pointer;
         padding-top: 10px;
         margin: 0 auto;
@@ -71,7 +71,7 @@
         border: none;
         outline: none;
     }
-    .cancel-btn:hover, .post-btn:hover {
+    .cancel-btn:hover, .post-btn:hover, .save-btn:hover {
         color: rgb(255, 15, 115);
     }
 }
