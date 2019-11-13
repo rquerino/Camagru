@@ -3,10 +3,10 @@
         <header>
             <h3>Login</h3>
         </header>
-        <main class="form-group">
+        <form class="form-group" @submit="login">
             <input type="text" v-model="username" placeholder="Username"/>
             <input type="password" v-model="password" placeholder="Password"/>
-            <button class="login-btn" @click="login">Log in</button>
+            <button class="login-btn" :fn="login">Log in</button>
             <br>
             <p>
               Forget your password? <router-link class="link" to="/password">Click here</router-link>.
@@ -14,7 +14,7 @@
             <div class="error_msg" v-if="hasErrors">
                 {{ error }}
             </div>
-        </main>
+        </form>
         <footer>
             <p>
                 Don't have an account? <router-link class="link" to="/register">Sign up</router-link>.
@@ -37,7 +37,8 @@ export default {
     }
   },
   methods: {
-    login () {
+    login (e) {
+      e.preventDefault()
       let apiUrl = this.$store.state.api_url
       if (this.username === '' || this.password === '') return alert('Please fill in all fields')
 

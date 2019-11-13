@@ -3,15 +3,15 @@
         <header>
             <h3>Register</h3>
         </header>
-        <main class="form-group">
+        <form class="form-group" @submit="register">
             <input type="text" v-model="username" placeholder="Username"/>
             <input type="text" v-model="email" placeholder="E-mail"/>
             <input type="password" v-model="password" placeholder="Password"/>
-            <button class="register-btn" @click="register">Register</button>
+            <button class="register-btn" :fn="register">Register</button>
             <div class="error_msg" v-if="hasErrors">
                 {{ error }}
             </div>
-        </main>
+        </form>
         <footer>
             <p>
                 Already registered? <router-link class="link" to="/login">Sign in</router-link>.
@@ -35,7 +35,8 @@ export default {
     }
   },
   methods: {
-    register () {
+    register (e) {
+      e.preventDefault()
       let apiUrl = this.$store.state.api_url
       if (this.username === '' || this.email === '' || this.password === '') return alert('Please fill in all fields')
       this.$http.post(apiUrl + 'user/register', {

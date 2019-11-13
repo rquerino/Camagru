@@ -29,13 +29,19 @@ module.exports = {
         })
     },
     getposts: (req, res) => {
-        model.find().sort({ $natural: -1}).populate({
+        model.find().sort({ $natural: -1}).skip(req.body.offset).limit(10).populate({
             path: 'comments.user_id',
             select: 'username'
-            })
-            .then(result => {
-                res.send(result);
-            });
+        }).then(result => {
+            res.send(result);
+        });
+        // model.find().sort({ $natural: -1}).populate({
+        //     path: 'comments.user_id',
+        //     select: 'username'
+        //     })
+        //     .then(result => {
+        //         res.send(result);
+        //     });
     },
     like: (req, res) => {
         let user_id = jwt.decode(req.body.auth_token).id;

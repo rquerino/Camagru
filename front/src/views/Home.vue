@@ -26,7 +26,8 @@
         <button class="comment-btn" @click="saveComment(post)">Post comment</button>
       </footer>
     </article>
-    <center><p>You reached the end 8^)</p></center>
+    <!-- <v-icon v-if="loading" name="circle-notch" spin scale="2"/> -->
+    <center><p v-if="end">You reached the end 8^)</p></center>
   </main>
 </template>
 
@@ -44,7 +45,9 @@ export default {
       auth_token: '',
       loggedIn: false,
       isVerified: false,
-      commentText: ''
+      commentText: '',
+      offset: 0,
+      end: false
     }
   },
   computed: {
@@ -133,6 +136,34 @@ export default {
     },
     goToProfile (username) {
       this.$router.push('/userprofile' + '?username=' + username)
+    },
+    atBottom () {
+      return Math.ceil(window.pageYOffset + window.innerHeight) >=
+        document.documentElement.offsetHeight
+    },
+    onScroll () {
+      if (this.atBottom()) {
+        this.fetchPosts()
+      }
+    },
+    fetchPosts () {
+      // Skip if reached end
+      if (this.end) {
+        return
+      }
+      this.$http.post(this.$store.state.api_url + 'post/getposts', {
+        offset: this.offset
+      })
+        .then(response => {
+          this.$store.commit('getFeed', response.data)
+          this.offset += 10
+          if (response.data.length < 10) {
+            this.end = true
+          }
+        })
+        .catch(err => {
+          if (err) throw err
+        })
     }
   },
   beforeMount () {
@@ -142,13 +173,17 @@ export default {
     }
   },
   mounted () {
-    this.$http.get(this.$store.state.api_url + 'post/getposts')
+    this.$http.post(this.$store.state.api_url + 'post/getposts', {
+      offset: this.offset
+    })
       .then(response => {
         this.$store.commit('getFeed', response.data)
+        this.offset += 10
       })
       .catch(err => {
         if (err) throw err
       })
+    window.onscroll = this.onScroll
   }
 }
 </script>

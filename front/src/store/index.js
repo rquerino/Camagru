@@ -42,7 +42,8 @@ export default new Vuex.Store({
       // feed = feed.sort(function (a, b) {
       //   return b.timestamp - a.timestamp
       // })
-      state.feed = feed
+      feed.forEach(el => state.feed.push(el))
+      // state.feed = feed
     },
     setUser (state, data) {
       state.user = data

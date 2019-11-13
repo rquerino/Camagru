@@ -3,7 +3,7 @@
         <header>
             <h4>Update information</h4>
         </header>
-        <main class="form-group">
+        <form class="form-group" @submit="update">
             <p>Username:</p>
             <input type="text" v-model="username" :placeholder="this.previousUsername"/>
             <p>E-mail:</p>
@@ -12,11 +12,11 @@
             <input type="password" v-model="password" placeholder="New password"/>
             <p>Would you like to receive e-mail notifications?</p>
             <input type="checkbox" v-model="notifications" id="notifications"/>
-            <button class="update-btn" @click="update">Update</button>
+            <button class="update-btn" :fn="update">Update</button>
             <div class="error_msg" v-if="hasErrors">
                 {{ error }}
             </div>
-        </main>
+        </form>
     </div>
 </template>
 
@@ -45,9 +45,9 @@ export default {
         this.previousEmail = data.details.email
       })
     },
-    update () {
+    update (e) {
+      e.preventDefault()
       // Handling errors
-      if (this.password === '' && this.username === '' && this.email === '') return alert('Please fill in at least one field.')
       let apiUrl = this.$store.state.api_url
       this.$http.post(apiUrl + 'user/config', {
         auth_token: this.auth_token,
