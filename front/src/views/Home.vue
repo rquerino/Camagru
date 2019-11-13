@@ -17,17 +17,17 @@
         <p class="timestamp">{{ timestampToDate(post.timestamp) }}</p>
         <p><strong>{{ post.username }}:</strong> {{ post.desc }}</p>
       </div>
-      <footer class="comments" v-if="isVerified">
+      <form class="comments" v-if="isVerified" @submit="(e) => saveComment(e, post)">
         <article class="texts" v-for="item of post.comments" :key="item._id">
           <span class="span-comment"><strong>{{ item.user_id.username}}:</strong> {{ item.text }}</span>
         </article>
         <input type="text" id="commentText" name="commentText" class="comment-input" v-model="commentText" />
         <br>
-        <button class="comment-btn" @click="saveComment(post)">Post comment</button>
-      </footer>
+        <button class="comment-btn" type="submit">Post comment</button>
+      </form>
     </article>
     <!-- <v-icon v-if="loading" name="circle-notch" spin scale="2"/> -->
-    <center><p v-if="end">You reached the end 8^)</p></center>
+    <center><p v-if="end" style="font-size: 12px">You reached the end 8^)</p></center>
   </main>
 </template>
 
@@ -87,7 +87,8 @@ export default {
         throw err
       })
     },
-    saveComment (post) {
+    saveComment (e, post) {
+      e.preventDefault()
       if (this.commentText === '') {
         return alert('Comment field is empty')
       }

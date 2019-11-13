@@ -7,7 +7,7 @@
             <input type="text" v-model="username" placeholder="Username"/>
             <input type="text" v-model="email" placeholder="E-mail"/>
             <input type="password" v-model="password" placeholder="Password"/>
-            <button class="register-btn" :fn="register">Register</button>
+            <button class="register-btn" type="submit">Register</button>
             <div class="error_msg" v-if="hasErrors">
                 {{ error }}
             </div>

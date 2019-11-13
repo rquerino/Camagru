@@ -121,7 +121,7 @@ module.exports = {
                     res.send({ success: false, msg: 'User not found' });
                 }
 
-                postModel.find({ user_id: user_id })
+                postModel.find({ user_id: user_id }).sort({ $natural: -1 })
                     .then(posts => {
                         res.send({
                             success: true,
@@ -260,7 +260,7 @@ module.exports = {
                     res.send({ success: false, msg: 'User not found' });
                 }
 
-                postModel.find({ user_id: user._id })
+                postModel.find({ user_id: user._id }).sort({ $natural: -1 })
                     .then(posts => {
                         res.send({
                             success: true,

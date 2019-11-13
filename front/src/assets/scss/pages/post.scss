@@ -7,6 +7,7 @@
     margin: 0 auto;
     display: flex;
     flex-direction: row;
+    padding-bottom: 20px;
     .capture-btn {
         cursor: pointer;
         padding-top: 10px;
@@ -128,16 +129,18 @@ video.sepia {
     button{
         width: 50px;
         height: 50px;
+        padding: 0;
         background: white;
         border-radius: 50%;
-        background-size: contain;
+        background-size: cover;
+        background-position: center;
         background-repeat: no-repeat;
         cursor: pointer;
-        border: 2px solid transparent;
+        border: 2px solid white;
         margin: 5px;
     }
     button:hover {
-        background: rgb(255, 15, 115);
+        border-color: rgb(255, 15, 115);
     }
     .material-icons {
         font-size: 40px;
@@ -168,3 +171,35 @@ video.sepia {
         background: rgb(255, 15, 115);
     }
 }
+
+
+.previous-pics {
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    display: grid;
+    grid-auto-rows: 1fr;
+    grid-template-columns: repeat(5, 1fr);
+    grid-auto-rows: min-content;
+    grid-gap: 5px;
+    padding: 5px;
+
+    p {
+        font-size: 14px;
+    }
+    .post {
+        padding: 0;
+
+        .post-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+    }
+}
+
+.previous-p {
+    color: #888;
+    font-size: 14px;
+  }

@@ -12,7 +12,7 @@
             <input type="password" v-model="password" placeholder="New password"/>
             <p>Would you like to receive e-mail notifications?</p>
             <input type="checkbox" v-model="notifications" id="notifications"/>
-            <button class="update-btn" :fn="update">Update</button>
+            <button class="update-btn" type="submit">Update</button>
             <div class="error_msg" v-if="hasErrors">
                 {{ error }}
             </div>

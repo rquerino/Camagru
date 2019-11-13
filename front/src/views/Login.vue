@@ -6,7 +6,7 @@
         <form class="form-group" @submit="login">
             <input type="text" v-model="username" placeholder="Username"/>
             <input type="password" v-model="password" placeholder="Password"/>
-            <button class="login-btn" :fn="login">Log in</button>
+            <button class="login-btn" type="submit">Log in</button>
             <br>
             <p>
               Forget your password? <router-link class="link" to="/password">Click here</router-link>.

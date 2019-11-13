@@ -64,6 +64,14 @@
         <input type="text" id="desc" name="desc" class="input-field" v-model="desc" />
       </div>
     </section>
+    <center><p class="previous-p" v-if="!captured">Previous pictures:</p></center>
+    <section class="previous-pics" v-if="!captured">
+      <div class="post" v-for="post in posts" :key="post._id">
+
+        <img :src="post.image" :alt="post.desc" class="post-image" />
+
+      </div>
+    </section>
   </main>
 </template>
 
@@ -86,7 +94,8 @@ export default {
       sepia: false,
       sticker: {},
       stickerList,
-      previousImage: null
+      previousImage: null,
+      posts: []
     }
   },
   methods: {
@@ -220,6 +229,12 @@ export default {
         throw err
       })
     }
+
+    this.$http.post(this.$store.state.api_url + 'user/getprofile', {
+      auth_token: localStorage.getItem('jwt')
+    }).then(({ data }) => {
+      this.posts = data.details.posts
+    })
   }
 }
 </script>
